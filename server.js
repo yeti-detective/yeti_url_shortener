@@ -15,26 +15,54 @@ mongo.connect('mongodb://quote-app:Quote-App@ds157278.mlab.com:57278/yetis_first
     });
     db.collection('urls').find({}, {_id: 0, master: 1}).toArray((err, result) => {
         if(err) return console.log(err);
-        console.log(result);
+        urlRegister = parseInt(result[0].master);
+        console.log(urlRegister);
     })
     
 });
 
 app.get("/:input", function(req, res){
     if (Boolean(parseInt(req.params.input))){
-        res.send(req.params.input);
+        db.collection('urls').find({"key": req.params.input}).toArray(err, (result) => {
+            res.redirect(result[0].url);    
+        })
+        
     }
 });
 
 app.get('/http:\//:url', function(req, res){
     if(Boolean(validUrl.isUri('http://' + req.params.url))){
-        res.send("Mongo time");
+        var shrtn = {"key": urlRegister, "url": 'http://' + req.params.url};
+        db.collection('urls').save(shrtn);
+        
+        db.collection('urls').updateOne(
+            {"master": urlRegister},
+            { $set: {"master": parseInt(urlRegister)+1} }
+        );
+        
+        urlRegister++;
+        db.collection('urls').find({"key": urlRegister - 1}, {_id: 0, master: 1}).toArray((err, result) => {
+            if(err) return console.log(err);
+            res.send(result);
+        });
     }
 });
 
 app.get('/https:\//:urlSSH', function(req, res){
-    if(Boolean(validUrl.isUri('https://' + req.params.urlSSH))){
-        res.send("Mongo time");
+    if(Boolean(validUrl.isUri('https://' + req.params.url))){
+        var shrtn = {"key": urlRegister, "url": 'https://' + req.params.url};
+        db.collection('urls').save(shrtn);
+        
+        db.collection('urls').updateOne(
+            {"master": urlRegister},
+            { $set: {"master": parseInt(urlRegister)+1} }
+        );
+        var findr = {"key": urlRegister};
+        urlRegister++;
+        db.collection('urls').find(findr, {_id: 0, master: 1}).toArray((err, result) => {
+            if(err) return console.log(err);
+            res.send(result);
+        });
     }
 });
 
