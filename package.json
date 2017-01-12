@@ -1,0 +1,26 @@
+{
+  "name": "url_shortener",
+  "version": "1.0.0",
+  "description": "FCC backend project. URL Shortener",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeti-detective/yeti_url_shortener.git"
+  },
+  "keywords": [
+    "fcc",
+    "url",
+    "shortener"
+  ],
+  "author": "Christopher Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yeti-detective/yeti_url_shortener/issues"
+  },
+  "homepage": "https://github.com/yeti-detective/yeti_url_shortener#readme"
+}

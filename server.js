@@ -50,19 +50,19 @@ app.get('/http:\//:url', function(req, res){
 
 app.get('/https:\//:urlSSH', function(req, res){
     if(Boolean(validUrl.isUri('https://' + req.params.url))){
-        var shrtn = {"key": urlRegister, "url": 'https://' + req.params.url};
-        db.collection('urls').save(shrtn);
-        
+        res.send({"key": urlRegister, "url": req.params.url});
+        /*
+        db.collection('urls').save({"key": urlRegister, "url": 'https://' + req.params.url});
         db.collection('urls').updateOne(
             {"master": urlRegister},
             { $set: {"master": parseInt(urlRegister)+1} }
-        );
-        var findr = {"key": urlRegister};
+        );*/
         urlRegister++;
-        db.collection('urls').find(findr, {_id: 0, master: 1}).toArray((err, result) => {
+        db.collection('urls').find({"key": urlRegister}, {_id: 0, master: 1}).toArray((err, result) => {
             if(err) return console.log(err);
             res.send(result);
         });
+        
     }
 });
 
