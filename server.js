@@ -23,7 +23,7 @@ mongo.connect('mongodb://quote-app:Quote-App@ds157278.mlab.com:57278/yetis_first
 
 app.get("/:input", function(req, res){
     if (Boolean(parseInt(req.params.input))){
-        db.collection('urls').find({"key": req.params.input}).toArray(err, (result) => {
+        db.collection('urls').find({"key": req.params.input}).toArray((result) => {
             res.redirect(result[0].url);    
         })
         
@@ -49,18 +49,17 @@ app.get('/http:\//:url', function(req, res){
 });
 
 app.get('/https:\//:urlSSH', function(req, res){
-    if(Boolean(validUrl.isUri('https://' + req.params.url))){
-        res.send({"key": urlRegister, "url": req.params.url});
-        /*
-        db.collection('urls').save({"key": urlRegister, "url": 'https://' + req.params.url});
+    if(Boolean(validUrl.isUri('https://' + req.params.urlSSH))){
+        
+        db.collection('urls').save({"key": urlRegister, "url": 'https://' + req.params.urlSSH});
         db.collection('urls').updateOne(
             {"master": urlRegister},
             { $set: {"master": parseInt(urlRegister)+1} }
-        );*/
+        );
         urlRegister++;
         db.collection('urls').find({"key": urlRegister}, {_id: 0, master: 1}).toArray((err, result) => {
             if(err) return console.log(err);
-            res.send(result);
+            res.send(result[0]);
         });
         
     }
