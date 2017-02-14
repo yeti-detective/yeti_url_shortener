@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/yeti-detective/yeti_url_shortener/issues"
   },
-  "homepage": "https://github.com/yeti-detective/yeti_url_shortener#readme"
+  "homepage": "https://github.com/yeti-detective/yeti_url_shortener#readme",
+  "dependencies": {
+    "valid-url": "^1.0.9"
+  }
 }
