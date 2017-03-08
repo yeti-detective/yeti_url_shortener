@@ -1,3 +1,4 @@
+var port = process.env.PORT || 8080;
 var express = require('express');
 var app = express();
 var validUrl = require('valid-url');
@@ -28,8 +29,8 @@ mongo.connect('mongodb://quote-app:Quote-App@ds157278.mlab.com:57278/yetis_first
     if(err) throw err;
     db = database; // elevate database scope for use in handlers
     
-    app.listen(8080,function(){
-        console.log('server listening on port 8080');
+    app.listen(port,function(){
+        console.log('server listening on port ' + port);
     });
     db.collection('urls').find({}, {_id: 0, master: 1}).toArray((err, result) => {
         if(err) return console.log(err);
