@@ -16,7 +16,7 @@ function shortener(key, url, response){
     urlRegister++;
     db.collection('urls').find({"key": key}, {_id: 0, key: 1, url: 1}).toArray((err, result) => {
             if(err) return console.log(err);
-            var finalAnswer = { "original_url": result[0].url, "short_url": "https://yeti-url-shortener-yetidetective.c9users.io/" + result[0].key};
+            var finalAnswer = { "original_url": result[0].url, "short_url": "https://yetis-url-shortener.herokuapp.com/" + result[0].key};
             response.send(JSON.stringify(finalAnswer));
     });
 }
@@ -42,7 +42,6 @@ mongo.connect('mongodb://quote-app:Quote-App@ds157278.mlab.com:57278/yetis_first
 
 app.get("/:key", function(req, res){
     if (Boolean(parseInt(req.params.key))){
-        // res.send(req.params.key);
         db.collection('urls').find({"key": parseInt(req.params.key)}).toArray((err, result) => {
             if(err) throw err;
             if (result.length < 1){
@@ -65,6 +64,7 @@ app.get('/https:\//:urlSSH', function(req, res){
     if(Boolean(validUrl.isUri('https://' + req.params.urlSSH))){
         shortener(urlRegister, 'https://' + req.params.urlSSH, res);
     }
+    failure(req.params.url.toString(), res);
 });
 
 app.get('*', function(req, res){
