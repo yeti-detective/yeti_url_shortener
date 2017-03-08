@@ -46,27 +46,35 @@ app.get("/:key", function(req, res){
             if(err) throw err;
             if (result.length < 1){
                 res.send(req.params.key.toString() + ' doesn\'t match a stored URL. Try adding something like: "/https://www.freecodecamp.com" to the end of this site\'s URL & hitting "Enter"');
+            }else{
+                res.redirect(result[0].url);
             }
-            res.redirect(result[0].url);    
+            
         })
+    }else{
+        failure(req.params.key, res);
     }
-    failure(req.params.key, res);
+    
 });
 
 app.get('/http:\//:url', function(req, res){
     if(Boolean(validUrl.isUri('http://' + req.params.url))){
+        console.log('this happened!');
         shortener(urlRegister, 'http://' + req.params.url, res);
+    }else{
+        failure(req.params.url.toString(), res);
     }
-    failure(req.params.url.toString(), res);
 });
 
 app.get('/https:\//:urlSSH', function(req, res){
     if(Boolean(validUrl.isUri('https://' + req.params.urlSSH))){
         shortener(urlRegister, 'https://' + req.params.urlSSH, res);
+    }else{
+        failure(req.params.url.toString(), res);
     }
-    failure(req.params.url.toString(), res);
+    
 });
 
-app.get('*', function(req, res){
+app.get('/', function(req, res){
     res.send('Add a URL as an argument to the web address');
 });
